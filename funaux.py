@@ -1,3 +1,4 @@
+from __future__ import print_function
 print("importando modulos de ploteo, audio e interaccion")
 
 #@title Importar Bilioteca de Ploteo
@@ -11,7 +12,7 @@ from scipy.io import wavfile
 from io import BytesIO
 
 #@title Importar Biblioteca Interact
-from __future__ import print_function
+
 from ipywidgets import interact, interactive, fixed, interact_manual
 import ipywidgets as widgets
 
