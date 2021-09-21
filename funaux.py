@@ -3,7 +3,7 @@ print("importando modulos de ploteo, audio e interaccion")
 #@title Importar Bilioteca de Ploteo
 import numpy as np
 import matplotlib.pyplot as plt
-%matplotlib inline
+
 
 #@title Importar Biblioteca de Audio
 from IPython.display import Audio
