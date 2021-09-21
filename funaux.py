@@ -181,7 +181,7 @@ def pasabanda(X,fs,finf,fsup):
   X3=np.fft.ifftshift(X2)
   return X3
 
-def tdds(fs,periodo, tmax=1, tipo, polaridad)
+def tdds(fs,periodo, tmax=1, tipo, polaridad):
   '''
   señal triangular o diente de  sierra
   primer argumento, frecuencia de muestreo
