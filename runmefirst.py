@@ -5,5 +5,5 @@ import numpy as np
 import matplotlib.pyplot as plt
 from IPython.display import Audio
 from scipy.io import wavfile
-#from ipywidgets import interact, interactive, fixed, interact_manual
+from ipywidgets import interact, interactive, fixed, interact_manual
 import ipywidgets as widgets
