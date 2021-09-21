@@ -51,7 +51,8 @@ def graft(x,fs,xlim):
     tmax = len(x)/fs
     t = np.arange(0, tmax, step=1. / fs)
     plt.plot(t, x)
-    plt.xlim(xlim) if len(xlim) >= 2
+    if len(xlim) >= 2:
+      plt.xlim(xlim) 
     plt.xlabel("Tiempo (s)")
     plt.ylabel("Amplitud")
     return
