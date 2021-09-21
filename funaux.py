@@ -1,6 +1,7 @@
 from __future__ import print_function
 print("importando modulos de ploteo, audio e interaccion")
 
+
 #@title Importar Bilioteca de Ploteo
 import numpy as np
 import matplotlib.pyplot as plt
@@ -50,7 +51,7 @@ def graft(x,fs,xlim):
     tmax = len(x)/fs
     t = np.arange(0, tmax, step=1. / fs)
     plt.plot(t, x)
-    plt.xlim(xlim)
+    plt.xlim(xlim) if xlim is not None
     plt.xlabel("Tiempo (s)")
     plt.ylabel("Amplitud")
     return
@@ -69,7 +70,7 @@ def graff1l(x,fs,xlim):
     plt.plot(freqs[:(N // 2)], 2*np.abs(X[:(N // 2)]))
     plt.xlabel("Frequencia (Hz)")
     plt.ylabel("Amplitud")
-    plt.xlim(xlim)
+    plt.xlim(xlim) if xlim is not None
     return X
 
 def graff2l(x,fs,xlim):
@@ -91,7 +92,7 @@ def graff2l(x,fs,xlim):
     # Now we can label the x-axis.
     plt.xlabel("Frequencia (Hz)")
     plt.ylabel("Amplitud")
-    plt.xlim(xlim)
+    plt.xlim(xlim) if xlim is not None
     return X
 
 def graff1lp(x,fs,xlim):
@@ -110,7 +111,7 @@ def graff1lp(x,fs,xlim):
     plt.xlim(xlim)
     plt.xlabel("Frequencia (Hz)")
     plt.ylabel("Potencia")
-    plt.xlim(xlim)
+    plt.xlim(xlim) if xlim is not None
     return X
   
 def graff2lp(x,fs,xlim):
@@ -132,7 +133,7 @@ def graff2lp(x,fs,xlim):
     #  etiquetado de ejes
     plt.xlabel("Frequencia (Hz)")
     plt.ylabel("Amplitud ")
-    plt.xlim(xlim)
+    plt.xlim(xlim) if xlim is not None
     return X
 
 def espectro(x,fs,xlim):
@@ -155,7 +156,7 @@ def espectro(x,fs,xlim):
     # Now we can label the x-axis.
     plt.xlabel("Frequencia (Hz)")
     plt.ylabel("Amplitud (log)")
-    plt.xlim(xlim)
+    plt.xlim(xlim) if xlim is not None
     return X
 
 def pasabanda(X,fs,finf,fsup):
