@@ -133,13 +133,13 @@ def espectro(x,fs,xlim):
     N = len(x)
     X = np.fft.fft(x)/N
     X_pl = np.log(np.abs(X)**2)
-    # Plot the positive frequencies.
+    # plotear frecuencias positivas
     freqsp = np.arange(0, fs / 2, step=fs / N)
     plt.plot(freqsp, X_pl[:(N // 2)])
-    # Plot the negative frequencies.
+    # plotear frecuencias negativas
     freqsn = np.arange(-fs / 2, 0, step=fs / N)
     plt.plot(freqsn, X_pl[(N // 2):])
-    # Now we can label the x-axis.
+    # etiquetar eje x
     plt.xlabel("Frequencia (Hz)")
     plt.ylabel("Amplitud (log)")
     if len(xlim) >= 2:
