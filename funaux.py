@@ -156,9 +156,9 @@ def espectro(x,fs,xlim):
 
 def pasabanda(X,fs,finf,fsup):
   '''
-  Filtro pasa banda ideal de las componentes en frecuencia X
-  con frecuencia de muestreo fs, y frecuencias inferior y superior
-  de la banda de paso finf y fsup.
+    Filtro pasa banda ideal de las componentes en frecuencia X
+    con frecuencia de muestreo fs, y frecuencias inferior y superior
+    de la banda de paso finf y fsup.
   '''
 
   #inversion de muestras de frecuencias
@@ -170,27 +170,24 @@ def pasabanda(X,fs,finf,fsup):
   ifns= int (-finf*nc/(fs) + nc//2)
   ifpi=int ( finf*nc/(fs) + nc//2)
   ifps =int ( fsup*nc/(fs) + nc//2)
-  #print(ifni,ifns,ifpi,ifps)
-
   #eliminacion de componentes fuera de la banda de paso
   X2[:ifni]=0
   X2[ifns:ifpi]=0
   X2 [ifps:]=0
-
   #inversion de muestras de frecuencias
   X3=np.fft.ifftshift(X2)
   return X3
 
 def xtriang(fs,periodo, tmax=1, tipo='t', polaridad='b'):
   '''
-  señal triangular o diente de  sierra:
-  primer argumento, frecuencia de muestreo
-  arreglo de valores de la funcion en el tiempo
-  segundo argumento, periodo del diente de sierra
-  tercer argumento, tiempo de simulacion
-  cuarto argumento, tipo: 't'riangular /\/\/\, 'c'reciente  /|/|/|, 'd'ecreciente  |\|\|\
-  quinto argumento, polaridad: 'u'nipolar (0,1), 'b'ipolar (-1,1)
-  entrega x, t: valores de la funcion, valores de tiempo 
+    señal triangular o diente de  sierra:
+    primer argumento, frecuencia de muestreo
+    arreglo de valores de la funcion en el tiempo
+    segundo argumento, periodo del diente de sierra
+    tercer argumento, tiempo de simulacion
+    cuarto argumento, tipo: 't'riangular /\/\/\, 'c'reciente  /|/|/|, 'd'ecreciente  |\|\|\
+    quinto argumento, polaridad: 'u'nipolar (0,1), 'b'ipolar (-1,1)
+    entrega x, t: valores de la funcion, valores de tiempo 
   '''
   t = np.arange(0, tmax, step=1. / fs)
   if tipo=='c':
@@ -207,13 +204,13 @@ def xtriang(fs,periodo, tmax=1, tipo='t', polaridad='b'):
 
 def xpulsos(fs, periodo, ciclo, tmax=1, polaridad='b'):
   '''
-  señal pulsos
-  primer argumento, frecuencia de muestreo
-  segundo argumento, periodo de la señal
-  tercer argumento, ciclo de trabajo (entre 0 y 1)
-  cuarto argumento, tiempo de simulacion
-  quinto argumento, polaridad: 'u'nipolar (0,1), 'b'ipolar (-1,1)
-  entrega x, t: valores de la funcion, valores de tiempo 
+    señal pulsos
+    primer argumento, frecuencia de muestreo
+    segundo argumento, periodo de la señal
+    tercer argumento, ciclo de trabajo (entre 0 y 1)
+    cuarto argumento, tiempo de simulacion
+    quinto argumento, polaridad: 'u'nipolar (0,1), 'b'ipolar (-1,1)
+    entrega x, t: valores de la funcion, valores de tiempo 
   '''
   t = np.arange(0, tmax, step=1. / fs)
   xx=t-t
