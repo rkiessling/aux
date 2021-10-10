@@ -181,33 +181,72 @@ def pasabanda(X,fs,finf,fsup):
   X3=np.fft.ifftshift(X2)
   return X3
 
-def tdds(fs,periodo, tmax=1, tipo='t', polaridad='b'):
+def xtriang(fs,periodo, tmax=1, tipo='t', polaridad='b'):
   '''
-  señal triangular o diente de  sierra
+  señal triangular o diente de  sierra:
   primer argumento, frecuencia de muestreo
   arreglo de valores de la funcion en el tiempo
   segundo argumento, periodo del diente de sierra
   tercer argumento, tiempo de simulacion
-  cuarto argumento, tipo: 't'riangular, 'c'reciente, 'd'ecreciente
+  cuarto argumento, tipo: 't'riangular /\/\/\, 'c'reciente  /|/|/|, 'd'ecreciente  |\|\|\
   quinto argumento, polaridad: 'u'nipolar (0,1), 'b'ipolar (-1,1)
   entrega x, t: valores de la funcion, valores de tiempo 
   '''
   t = np.arange(0, tmax, step=1. / fs)
-  #if tipo=='t':
-  #  periodo=periodo/2
-
   if tipo=='c':
     x = np.mod(t,periodo)
   elif tipo=='d':
     x = periodo-np.mod(t,periodo)
   elif tipo=='t':
     x = 1-np.abs(periodo/2-np.mod(t,periodo))
-  
   if polaridad=='u':
     x=normalizar(x)
   else:
     x=normalizarb(x)
-    
   return x,t
+
+def xtriang(fs,periodo, tmax=1, tipo='t', polaridad='b'):
+  '''
+  señal triangular o diente de  sierra:
+  primer argumento, frecuencia de muestreo
+  segundo argumento, periodo del diente de sierra
+  tercer argumento, tiempo de simulacion
+  cuarto argumento, tipo: 't'riangular /\/\/\, 'c'reciente  /|/|/|, 'd'ecreciente  |\|\|\
+  quinto argumento, polaridad: 'u'nipolar (0,1), 'b'ipolar (-1,1)
+  entrega x, t: valores de la funcion, valores de tiempo 
+  '''
+  t = np.arange(0, tmax, step=1. / fs)
+  if tipo=='c':
+    x = np.mod(t,periodo)
+  elif tipo=='d':
+    x = periodo-np.mod(t,periodo)
+  elif tipo=='t':
+    x = 1-np.abs(periodo/2-np.mod(t,periodo))
+  if polaridad=='u':
+    x=normalizar(x)
+  else:
+    x=normalizarb(x)
+  return x,t
+
+def xpulsos(fs, periodo, ciclo, tmax=1, polaridad='b'):
+  '''
+  señal pulsos
+  primer argumento, frecuencia de muestreo
+  segundo argumento, periodo de la señal
+  tercer argumento, ciclo de trabajo (entre 0 y 1)
+  cuarto argumento, tiempo de simulacion
+  quinto argumento, polaridad: 'u'nipolar (0,1), 'b'ipolar (-1,1)
+  entrega x, t: valores de la funcion, valores de tiempo 
+  '''
+  t = np.arange(0, tmax, step=1. / fs)
+  xx=t-t
+  x = tut.normalizar(np.mod(t,periodo))
+  xx[x<ciclo]=1
+  if polaridad=='u':
+    x=normalizar(x)
+  else:
+    x=normalizarb(x)
+  return x,t
+
   
 print("listo!")
