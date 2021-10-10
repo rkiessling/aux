@@ -222,5 +222,17 @@ def xpulsos(fs, periodo, ciclo, tmax=1, polaridad='b'):
     xx=normalizarb(xx)
   return xx,t
 
+def potencia(x):
+  '''
+    potencia de un array,
+    suma de los cuadrados de los elementos del vector x, dividido la longitud del vector
+    valido para entradas reales y complejas, en dominio del tiempo y de la frecuencia
+  '''
+  p=np.sum(x*x.conjugate())/len(x)
+  return p
+
+
+  
+  
   
 print("listo!")
