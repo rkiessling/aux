@@ -224,15 +224,21 @@ def xpulsos(fs, periodo, ciclo, tmax=1, polaridad='b'):
 
 def potencia(x):
   '''
-    potencia de un array,
+    potencia de un vector de muestras,
     suma de los cuadrados de los elementos del vector x, dividido la longitud del vector
     valido para entradas reales y complejas, en dominio del tiempo y de la frecuencia
   '''
   p=np.sum(x*x.conjugate())/len(x)
   return p
 
-
-  
+def energia(x):
+  '''
+    energia de un vector de muestras,
+    suma de los cuadrados de los elementos del vector x
+    valido para entradas reales y complejas, en dominio del tiempo y de la frecuencia
+  '''
+  e=np.sum(x*x.conjugate())
+  return e
   
   
 print("listo!")
