@@ -243,10 +243,10 @@ def xpulsos(fs, periodo, ciclo, tmax=1, polaridad='b'):
   x = tut.normalizar(np.mod(t,periodo))
   xx[x<ciclo]=1
   if polaridad=='u':
-    x=normalizar(x)
+    xx=normalizar(xx)
   else:
-    x=normalizarb(x)
-  return x,t
+    xx=normalizarb(xx)
+  return xx,t
 
   
 print("listo!")
