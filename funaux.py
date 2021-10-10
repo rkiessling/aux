@@ -217,7 +217,7 @@ def xpulsos(fs, periodo, ciclo, tmax=1, polaridad='b'):
   '''
   t = np.arange(0, tmax, step=1. / fs)
   xx=t-t
-  x = tut.normalizar(np.mod(t,periodo))
+  x = normalizar(np.mod(t,periodo))
   xx[x<ciclo]=1
   if polaridad=='u':
     xx=normalizar(xx)
