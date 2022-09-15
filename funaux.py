@@ -277,7 +277,7 @@ def xcos(fs, f, tmax=1, a=1, ph=0):
     entrega x, t: valores de la funcion, valores de tiempo 
   '''
   t = np.arange(0, tmax, step=1. / fs)
-  x = a*np.cos(2*np.pi*t+ph)
+  x = a*np.cos(2*np.pi*f*t+ph)
   return x,t
 
 def potencia(x):
