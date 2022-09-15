@@ -36,7 +36,6 @@ def graft(x,fs,xlim):
     '''
        grafica en el dominio del tiempo
        primer argumento, arreglo de valores de la funcion en el tiempo
-       tercer argumento, periodo a muestrear [t_inicial, t_final]
        segundo argumento, frecuencia de muestreo
        tercer argumento, intervalo de tiempo a graficar [tmin, tmax]
     '''
@@ -266,6 +265,20 @@ def xpulsos(fs, periodo, ciclo, tmax=1, polaridad='b'):
   else:
     xx=normalizarb(xx)
   return xx,t
+
+def xcos(fs, f, tmax=1, a=1, ph=0):
+  '''
+    señal cosenoidal
+    primer argumento, frecuencia de muestreo
+    segundo argumento, frecuencia de la cosenoidal
+    tercer argumento, tiempo de simulacion
+    cuarto argumento, amplitud
+    quinto argumento, fase
+    entrega x, t: valores de la funcion, valores de tiempo 
+  '''
+  t = np.arange(0, tmax, step=1. / fs)
+  x = a*np.cos(2*np.pi*t+ph)
+  return x,t
 
 def potencia(x):
   '''
