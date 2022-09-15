@@ -1,6 +1,9 @@
+# version 0.1 14/9/2022
+
+
 from __future__ import print_function
 print("importando modulos de ploteo, audio e interaccion")
-
+   
 import numpy as np
 import matplotlib.pyplot as plt
 from IPython.display import Audio
@@ -62,6 +65,48 @@ def graff1l(x,fs,xlim):
     plt.ylabel("Amplitud")
     if len(xlim) >= 2:
       plt.xlim(xlim) 
+    return X
+
+def graff1lf(x,fs,xlim):
+    '''
+       grafica en el dominio de la frecuencia, espectro de fases de un lado
+       primer argumento, arreglo de valores de la funcion en el tiempo
+       segundo argumento, frecuencia de muestreo
+       tercer argumento, intervalo de frecuencias a graficar [finf, fsup]
+       entrega componentes en frecuencia (nros. complejos)
+    '''
+    N = len(x)
+    X=np.fft.fft(x)/N
+    freqs = np.arange(0, fs / 2, step=fs / N)
+    plt.plot(freqs[:(N // 2)], np.angle(X[:(N // 2)],deg=True),'b*')
+    plt.xlabel("Frequencia (Hz)")
+    plt.ylabel("Amplitud")
+    plt.ylim([-180,180]) 
+    if len(xlim) >= 2:
+        plt.xlim(xlim) 
+    return X
+
+def graff2lf(x,fs,xlim):
+    '''
+       grafica en el dominio de la frecuencia, espectro de fases de un lado
+       primer argumento, arreglo de valores de la funcion en el tiempo
+       segundo argumento, frecuencia de muestreo
+       tercer argumento, intervalo de frecuencias a graficar [finf, fsup]
+       entrega componentes en frecuencia (nros. complejos)
+    '''
+    N = len(x)
+    X=np.fft.fft(x)/N
+    # Plot the positive frequencies.
+    freqsp = np.arange(0, fs / 2, step=fs / N)
+    plt.plot(freqsp, np.angle(X[:(N // 2)],deg=True),'b*')
+    # Plot the negative frequencies.
+    freqsn = np.arange(-fs / 2, 0, step=fs / N)
+    plt.plot(freqsn, np.angle(X[(N // 2):],deg=True),'b*')
+    plt.xlabel("Frequencia (Hz)")
+    plt.ylabel("Amplitud")
+    plt.ylim([-180,180]) 
+    if len(xlim) >= 2:
+        plt.xlim(xlim) 
     return X
 
 def graff2l(x,fs,xlim):
@@ -156,9 +201,9 @@ def espectro(x,fs,xlim):
 
 def pasabanda(X,fs,finf,fsup):
   '''
-  Filtro pasa banda ideal de las componentes en frecuencia X
-  con frecuencia de muestreo fs, y frecuencias inferior y superior
-  de la banda de paso finf y fsup.
+    Filtro pasa banda ideal de las componentes en frecuencia X
+    con frecuencia de muestreo fs, y frecuencias inferior y superior
+    de la banda de paso finf y fsup.
   '''
 
   #inversion de muestras de frecuencias
@@ -170,44 +215,75 @@ def pasabanda(X,fs,finf,fsup):
   ifns= int (-finf*nc/(fs) + nc//2)
   ifpi=int ( finf*nc/(fs) + nc//2)
   ifps =int ( fsup*nc/(fs) + nc//2)
-  #print(ifni,ifns,ifpi,ifps)
-
   #eliminacion de componentes fuera de la banda de paso
   X2[:ifni]=0
   X2[ifns:ifpi]=0
   X2 [ifps:]=0
-
   #inversion de muestras de frecuencias
   X3=np.fft.ifftshift(X2)
   return X3
 
-def tdds(fs,periodo, tmax=1, tipo='t', polaridad='b'):
+def xtriang(fs,periodo, tmax=1, tipo='t', polaridad='b'):
   '''
-  señal triangular o diente de  sierra
-  primer argumento, frecuencia de muestreo
-  arreglo de valores de la funcion en el tiempo
-  segundo argumento, periodo del diente de sierra
-  tercer argumento, tiempo de simulacion
-  cuarto argumento, tipo: 't'riangular, 'c'reciente, 'd'ecreciente
-  quinto argumento, polaridad: 'u'nipolar (0,1), 'b'ipolar (-1,1)
-  entrega x, t: valores de la funcion, valores de tiempo 
+    señal triangular o diente de  sierra:
+    primer argumento, frecuencia de muestreo
+    arreglo de valores de la funcion en el tiempo
+    segundo argumento, periodo del diente de sierra
+    tercer argumento, tiempo de simulacion
+    cuarto argumento, tipo: 't'riangular /\/\/\, 'c'reciente  /|/|/|, 'd'ecreciente  |\|\|\
+    quinto argumento, polaridad: 'u'nipolar (0,1), 'b'ipolar (-1,1)
+    entrega x, t: valores de la funcion, valores de tiempo 
   '''
   t = np.arange(0, tmax, step=1. / fs)
-  #if tipo=='t':
-  #  periodo=periodo/2
-
   if tipo=='c':
     x = np.mod(t,periodo)
   elif tipo=='d':
     x = periodo-np.mod(t,periodo)
   elif tipo=='t':
     x = 1-np.abs(periodo/2-np.mod(t,periodo))
-  
   if polaridad=='u':
     x=normalizar(x)
   else:
     x=normalizarb(x)
-    
   return x,t
+
+def xpulsos(fs, periodo, ciclo, tmax=1, polaridad='b'):
+  '''
+    señal pulsos
+    primer argumento, frecuencia de muestreo
+    segundo argumento, periodo de la señal
+    tercer argumento, ciclo de trabajo (entre 0 y 1)
+    cuarto argumento, tiempo de simulacion
+    quinto argumento, polaridad: 'u'nipolar (0,1), 'b'ipolar (-1,1)
+    entrega x, t: valores de la funcion, valores de tiempo 
+  '''
+  t = np.arange(0, tmax, step=1. / fs)
+  xx=t-t
+  x = normalizar(np.mod(t,periodo))
+  xx[x<ciclo]=1
+  if polaridad=='u':
+    xx=normalizar(xx)
+  else:
+    xx=normalizarb(xx)
+  return xx,t
+
+def potencia(x):
+  '''
+    potencia de un vector de muestras,
+    suma de los cuadrados de los elementos del vector x, dividido la longitud del vector
+    valido para entradas reales y complejas, en dominio del tiempo y de la frecuencia
+  '''
+  p=np.sum(x*x.conjugate())/len(x)
+  return p
+
+def energia(x):
+  '''
+    energia de un vector de muestras,
+    suma de los cuadrados de los elementos del vector x
+    valido para entradas reales y complejas, en dominio del tiempo y de la frecuencia
+  '''
+  e=np.sum(x*x.conjugate())
+  return e
+  
   
 print("listo!")
