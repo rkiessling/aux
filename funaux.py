@@ -273,7 +273,7 @@ def xcos(fs, f, tmax=1, a=1, ph=0):
     segundo argumento, frecuencia de la cosenoidal
     tercer argumento, tiempo de simulacion
     cuarto argumento, amplitud
-    quinto argumento, fase
+    quinto argumento, fase en radianes
     entrega x, t: valores de la funcion, valores de tiempo 
   '''
   t = np.arange(0, tmax, step=1. / fs)
