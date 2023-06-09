@@ -298,5 +298,107 @@ def energia(x):
   e=np.sum(x*x.conjugate())
   return e
   
+def calc_espectrograma(x, fs, window_size, overlap):
+    '''
+    Crea un espectrograma a partir de un vector de muestras de tiempo.
+
+    Argumentos:
+    x: Array de muestras de tiempo.
+    fs: Frecuencia de muestreo.
+    window_size: Tamaño de la ventana de análisis (en muestras).
+    overlap: Superposición entre ventanas consecutivas (como fracción, por ejemplo, 0.5 para una superposición del 50%).
+
+    Retorna:
+    spectrograma: Matriz 2D que representa el espectrograma.
+    freqs: Array de frecuencias.
+    times: Array de instantes de tiempo.
+    '''
+    # Calcula el número de muestras superpuestas
+    hop_size = int(window_size * (1 - overlap))
+    # Calcula el número de ventanas de tiempo
+    num_windows = (len(x) - window_size) // hop_size + 1
+    # Inicializa la matriz del espectrograma
+    spectrograma = np.zeros((window_size, num_windows), dtype=complex)
+    # Aplica la ventana y realiza la transformada de Fourier en cada ventana
+    for i in range(num_windows):
+        inicio = i * hop_size
+        fin = inicio + window_size
+        ventana = np.hanning(window_size)
+        muestras_ventaneadas = x[inicio:fin] * ventana
+        spectrograma[:, i] = np.fft.fft(muestras_ventaneadas)
+    # Obtiene las frecuencias e instantes de tiempo
+    freqs = np.fft.fftfreq(window_size, 1 / fs)
+    times = np.arange(num_windows) * hop_size / fs
+    return np.abs(spectrograma), freqs, times
+   
+def graf_espectrograma(x, fs, window_size, overlap):
+    '''
+    Grafica el espectrograma de un vector de muestras de tiempo.
+
+    Argumentos:
+    x: Array de muestras de tiempo.
+    fs: Frecuencia de muestreo.
+    window_size: Tamaño de la ventana de análisis (en muestras).
+    overlap: Superposición entre ventanas consecutivas (como fracción, por ejemplo, 0.5 para una superposición del 50%).
+    '''
+    # Crea el espectrograma
+    espectrograma, freqs, times = calc_espectrogram(x, fs, window_size, overlap)
+
+    # Grafica el espectrograma
+    plt.figure(figsize=(10, 6))
+    plt.imshow(np.abs(espectrograma), aspect='auto', origin='lower', cmap='jet', extent=[times[0], times[-1], freqs[0], freqs[-1]])
+    plt.colorbar(label='Magnitud')
+    plt.xlabel('Tiempo (s)')
+    plt.ylabel('Frecuencia (Hz)')
+    plt.title('Espectrograma')
+    plt.show()
+      
+def graf_espectrograma_2d(x, fs, window_size, overlap):
+    '''
+    Grafica un espectrograma 2D de un vector de muestras de tiempo.
+
+    Argumentos:
+    x: Array de muestras de tiempo.
+    fs: Frecuencia de muestreo.
+    window_size: Tamaño de la ventana de análisis (en muestras).
+    overlap: Superposición entre ventanas consecutivas (como fracción, por ejemplo, 0.5 para una superposición del 50%).
+    '''
+    # Crea el espectrograma
+    espectrograma, freqs, times = calc_espectrograma(x, fs, window_size, overlap)
+
+    # Grafica el espectrograma
+    plt.figure(figsize=(10, 6))
+    plt.imshow(np.abs(espectrograma), aspect='auto', origin='lower', cmap='jet', extent=[times[0], times[-1], freqs[0], freqs[-1]])
+    plt.colorbar(label='Magnitud')
+    plt.xlabel('Tiempo (s)')
+    plt.ylabel('Frecuencia (Hz)')
+    plt.title('Espectrograma 2D')
+    plt.show()
+
+def graf_espectrograma_3d(x, fs, window_size, overlap):
+    '''
+    Grafica un espectrograma 3D de un vector de muestras de tiempo.
+
+    Argumentos:
+    x: Array de muestras de tiempo.
+    fs: Frecuencia de muestreo.
+    window_size: Tamaño de la ventana de análisis (en muestras).
+    overlap: Superposición entre ventanas consecutivas (como fracción, por ejemplo, 0.5 para una superposición del 50%).
+    '''
+    # Crea el espectrograma
+    espectrograma, freqs, times = calc_espectrogram(x, fs, window_size, overlap)
+
+    # Crea una malla para la graficación del espectrograma
+    times_mesh, freqs_mesh = np.meshgrid(times, freqs)
+
+    # Grafica el espectrograma en 3D
+    fig = plt.figure(figsize=(12, 8))
+    ax = fig.add_subplot(111, projection='3d')
+    ax.plot_surface(times_mesh, freqs_mesh, np.abs(espectrograma), cmap='jet')
+    ax.set_xlabel('Tiempo (s)')
+    ax.set_ylabel('Frecuencia (Hz)')
+    ax.set_zlabel('Magnitud')
+    ax.set_title('Espectrograma 3D')
+    plt.show()
   
 print("listo!")
